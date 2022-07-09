@@ -27,5 +27,9 @@ func TestSingleArgsParseBoolReturnTrue(t *testing.T) {
 	argsParser := &ArgsParser{}
 	Parse(argsParser, "-l")
 	assert.Equal(t, argsParser.Logging, true)
-
+}
+func TestSingleArgsParseIntReturn8080(t *testing.T) {
+	argsParser := &ArgsParser{}
+	Parse(argsParser, "-p", "8080")
+	assert.Equal(t, argsParser.Port, 8080)
 }
