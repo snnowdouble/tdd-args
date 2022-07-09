@@ -41,7 +41,7 @@ func TestSingleArgsParseIntReturnReal(t *testing.T) {
 
 func TestArgsParseBoolIntStringReturnReal(t *testing.T) {
 	argsParser := &ArgsParser{}
-	Parse(argsParser, "l", "-p", "8080", "-d", "/usr/logs")
+	Parse(argsParser, "-l", "-p", "8080", "-d", "/usr/logs")
 	assert.Equal(t, argsParser.Logging, true)
 	assert.Equal(t, argsParser.Port, 8080)
 	assert.Equal(t, argsParser.Directory, "/usr/logs")
