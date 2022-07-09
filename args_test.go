@@ -22,15 +22,10 @@ output: /usr/logs
 input: -l -d 8080 -f /usr/local
 output: true 8010 /usr/local
 */
-type ArgsParser struct {
-	BooleanType bool   `tag:"l"`
-	IntType     int    `tag:"p"`
-	StringType  string `tag:"d"`
-}
 
-func TestArgsParseBool(t *testing.T) {
-	argsParser := ArgsParser{}
-	Parse(argsParser, "l")
-	assert.Equal(t, argsParser.BooleanType, true)
+func TestSingleArgsParseBoolReturnTrue(t *testing.T) {
+	argsParser := &ArgsParser{}
+	Parse(argsParser, "-l")
+	assert.Equal(t, argsParser.Logging, true)
 
 }
