@@ -2,6 +2,7 @@ package tdd_args
 
 import (
 	"reflect"
+	"strconv"
 )
 
 type ArgsParser struct {
@@ -26,10 +27,13 @@ func Parse(argsParser *ArgsParser, argsList ...string) {
 			Tag:      argsType.Field(i).Tag.Get("tag"),
 		}
 	}
-	for _, args := range argsList {
+	for idx, args := range argsList {
 		if argsSchema, ok := argsSchemaMap[args]; ok {
 			if argsSchema.DataType == "bool" {
 				argsParser.Logging = true
+			} else if argsSchema.DataType == "int" {
+				argsInt, _ := strconv.ParseInt(argsList[idx+1], 10, 64)
+				argsParser.Port = int(argsInt)
 			}
 		}
 	}
