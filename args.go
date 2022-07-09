@@ -34,6 +34,8 @@ func Parse(argsParser *ArgsParser, argsList ...string) {
 			} else if argsSchema.DataType == "int" {
 				argsInt, _ := strconv.ParseInt(argsList[idx+1], 10, 64)
 				argsParser.Port = int(argsInt)
+			} else if argsSchema.DataType == "string" {
+				argsParser.Directory = argsList[idx+1]
 			}
 		}
 	}
