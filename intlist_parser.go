@@ -4,11 +4,9 @@ import (
 	"fmt"
 	"regexp"
 	"strconv"
-	"strings"
 )
 
 type IntListParser struct {
-	IntParser
 }
 
 func (il *IntListParser) parser(parser *ArgsParser, argsList []string, idx int) error {
@@ -28,8 +26,4 @@ func (il *IntListParser) parser(parser *ArgsParser, argsList []string, idx int) 
 	parser.IntList = intList
 
 	return nil
-}
-
-func (il *IntListParser) containsInvalidArgs(argsList []string, idx int) bool {
-	return len(argsList) > idx+1 && !strings.Contains(argsList[idx+1], "-")
 }
