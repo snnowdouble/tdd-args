@@ -168,5 +168,6 @@ output: this is a book  1 2 -3 5
 func TestAllArgsParseStringIntListReturnReal(t *testing.T) {
 	argsParser := &ArgsParser{}
 	Parse(argsParser, "-g", "this", "is", "a", "book", "-t", "1", "2", "-3", "5")
-	assert.Equal(t, argsParser.StringList, []string{"this", "is", "a", "book", "1", "2", "-3", "5"})
+	assert.Equal(t, argsParser.StringList, []string{"this", "is", "a", "book"})
+	assert.Equal(t, argsParser.IntList, []int{1, 2, -3, 5})
 }
