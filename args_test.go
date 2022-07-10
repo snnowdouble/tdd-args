@@ -28,7 +28,7 @@ func TestSingleArgsParseBoolReturnDefault(t *testing.T) {
 
 /*single bool sad path：
 input: -l t
-output: false
+output: too many args error
 */
 func TestSingleArgsParseBoolReturnErr(t *testing.T) {
 	argsParser := &ArgsParser{}
@@ -59,7 +59,7 @@ func TestSingleArgsParseIntReturnDefault(t *testing.T) {
 
 /*single bool sad path：
 input: -p 8080 8081
-output: false
+output: too many args error
 */
 func TestSingleArgsParseIntReturnErr(t *testing.T) {
 	argsParser := &ArgsParser{}
@@ -75,6 +75,26 @@ func TestSingleArgsParseIntReturnReal(t *testing.T) {
 	argsParser := &ArgsParser{}
 	Parse(argsParser, "-d", "/usr/logs")
 	assert.Equal(t, argsParser.Directory, "/usr/logs")
+}
+
+/*single string happy path:
+input: -d
+output: ""
+*/
+func TestSingleArgsParseStringReturnDefault(t *testing.T) {
+	argsParser := &ArgsParser{}
+	Parse(argsParser, "-d")
+	assert.Equal(t, argsParser.Directory, "")
+}
+
+/*single string sad path:
+input: -d
+output: "too many args error"
+*/
+func TestSingleArgsParseStringReturnErr(t *testing.T) {
+	argsParser := &ArgsParser{}
+	err := Parse(argsParser, "-d", "the", "engine")
+	assert.Equal(t, err.Error(), "too many args error")
 }
 
 /*all happy path
