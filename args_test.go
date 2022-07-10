@@ -150,3 +150,13 @@ func TestSingleArgsParseIntListReturnErr(t *testing.T) {
 	err := Parse(argsParser, "-t", "1", "2", "-3", "u")
 	assert.Equal(t, err.Error(), "invalid args error")
 }
+
+/*single string list happy path：
+input: -g this is a book
+output: this is a book
+*/
+func TestSingleArgsParseStringListReturnReal(t *testing.T) {
+	argsParser := &ArgsParser{}
+	Parse(argsParser, "-g", "this", "is", "a", "book")
+	assert.Equal(t, argsParser.StringList, []string{"this", "is", "a", "book"})
+}
