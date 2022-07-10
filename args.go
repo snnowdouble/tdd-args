@@ -32,6 +32,7 @@ func registerParseMap() map[string]SpecificParser {
 	initParserMap["bool"] = new(BoolParser)
 	initParserMap["int"] = new(IntParser)
 	initParserMap["string"] = new(StringParser)
+	initParserMap["[]int"] = new(IntListParser)
 
 	return initParserMap
 }
