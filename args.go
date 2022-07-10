@@ -27,13 +27,18 @@ func registerParseMap() map[string]SpecificParser {
 	return initParserMap
 }
 
-func Parse(argsParser *ArgsParser, argsList ...string) {
+func Parse(argsParser *ArgsParser, argsList ...string) error {
 	argsSchemaMap := argsSchemaMapBuilder()
 	for idx, args := range argsList {
 		if argsSchema, ok := argsSchemaMap[args]; ok {
-			parserFactory(argsSchema.DataType, argsParser, getValue(idx, argsList))
+			err := parserFactory(argsSchema.DataType, argsParser, getValue(idx, argsList))
+			if err != nil {
+				return err
+			}
 		}
 	}
+
+	return nil
 
 }
 
@@ -62,7 +67,12 @@ func getArgsSchemaKey(argsType reflect.Type, i int) string {
 	return "-" + argsType.Field(i).Tag.Get("tag")
 }
 
-func parserFactory(dataType string, argsParser *ArgsParser, value string) {
+func parserFactory(dataType string, argsParser *ArgsParser, value string) error {
 	initParserMap := registerParseMap()
-	initParserMap[dataType].parser(argsParser, value)
+	err := initParserMap[dataType].parser(argsParser, value)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
