@@ -1,6 +1,7 @@
 package tdd_args
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 )
@@ -13,7 +14,10 @@ func (il *IntListParser) parser(parser *ArgsParser, argsList []string, idx int) 
 	argsList = argsList[1:]
 	intList := make([]int, 0)
 	for _, args := range argsList {
-		argsInt, _ := strconv.ParseInt(args, 10, 64)
+		argsInt, err := strconv.ParseInt(args, 10, 64)
+		if err != nil {
+			return fmt.Errorf("invalid args error")
+		}
 		intList = append(intList, int(argsInt))
 	}
 	parser.IntList = intList
