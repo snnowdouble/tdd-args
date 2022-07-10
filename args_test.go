@@ -47,6 +47,26 @@ func TestSingleArgsParseIntReturn8080(t *testing.T) {
 	assert.Equal(t, argsParser.Port, 8080)
 }
 
+/*single bool default value：
+input: -p
+output: 0
+*/
+func TestSingleArgsParseIntReturnDefault(t *testing.T) {
+	argsParser := &ArgsParser{}
+	Parse(argsParser, "-p")
+	assert.Equal(t, argsParser.Port, 0)
+}
+
+/*single bool sad path：
+input: -p 8080 8081
+output: false
+*/
+func TestSingleArgsParseIntReturnErr(t *testing.T) {
+	argsParser := &ArgsParser{}
+	err := Parse(argsParser, "-p", "8080", "8081")
+	assert.Equal(t, err.Error(), "too many args error")
+}
+
 /*single string happy path:
 input: -d /usr//logs
 output: /usr/logs
