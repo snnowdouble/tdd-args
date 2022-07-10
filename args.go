@@ -33,6 +33,7 @@ func registerParseMap() map[string]SpecificParser {
 	initParserMap["int"] = new(IntParser)
 	initParserMap["string"] = new(StringParser)
 	initParserMap["[]int"] = new(IntListParser)
+	initParserMap["[]string"] = new(StringListParser)
 
 	return initParserMap
 }
