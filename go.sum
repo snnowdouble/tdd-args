@@ -1,0 +1,4 @@
+github.com/ahrtr/gocontainer v0.3.0 h1:/4wM0VhaLEYZMoF6WT8ZHUmf2n9BVpCD3uMaKrA0iHY=
+github.com/ahrtr/gocontainer v0.3.0/go.mod h1:cQoR5/JTMoDNEkk5vGaohPZ+nnTQVB2nk2Y012WJWsM=
+github.com/magiconair/properties v1.8.6 h1:5ibWZ6iY0NctNGWo87LalDlEZ6R41TqbbDamhfG/Qzo=
+github.com/magiconair/properties v1.8.6/go.mod h1:y3VJvCyxH9uVvJTWEGAELF3aiYNyPKd5NZ3oSwXrF60=

@@ -16,6 +16,13 @@ type ArgsSchema struct {
 	Tag      string
 }
 
+type ArgsParserFactoryReq struct {
+	DataType   string
+	argsParser *ArgsParser
+	valueList  []string
+	idx        int
+}
+
 var initParserMap map[string]SpecificParser
 
 func registerParseMap() map[string]SpecificParser {
@@ -31,7 +38,12 @@ func Parse(argsParser *ArgsParser, argsList ...string) error {
 	argsSchemaMap := argsSchemaMapBuilder()
 	for idx, args := range argsList {
 		if argsSchema, ok := argsSchemaMap[args]; ok {
-			err := parserFactory(argsSchema.DataType, argsParser, getValue(idx, argsList))
+			err := parserFactory(&ArgsParserFactoryReq{
+				DataType:   argsSchema.DataType,
+				argsParser: argsParser,
+				valueList:  argsList,
+				idx:        idx,
+			})
 			if err != nil {
 				return err
 			}
@@ -39,14 +51,6 @@ func Parse(argsParser *ArgsParser, argsList ...string) error {
 	}
 
 	return nil
-
-}
-
-func getValue(idx int, argsList []string) string {
-	if len(argsList) == 1 {
-		return "true"
-	}
-	return argsList[idx+1]
 
 }
 
@@ -67,9 +71,9 @@ func getArgsSchemaKey(argsType reflect.Type, i int) string {
 	return "-" + argsType.Field(i).Tag.Get("tag")
 }
 
-func parserFactory(dataType string, argsParser *ArgsParser, value string) error {
+func parserFactory(req *ArgsParserFactoryReq) error {
 	initParserMap := registerParseMap()
-	err := initParserMap[dataType].parser(argsParser, value)
+	err := initParserMap[req.DataType].parser(req.argsParser, req.valueList, req.idx)
 	if err != nil {
 		return err
 	}
