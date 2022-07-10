@@ -2,7 +2,6 @@ package tdd_args
 
 import (
 	"reflect"
-	"strconv"
 )
 
 type ArgsParser struct {
@@ -17,27 +16,53 @@ type ArgsSchema struct {
 	Tag      string
 }
 
+var initParserMap map[string]SpecificParser
+
+func registerParseMap() map[string]SpecificParser {
+	initParserMap := make(map[string]SpecificParser)
+	initParserMap["bool"] = new(BoolParser)
+	initParserMap["int"] = new(IntParser)
+	initParserMap["string"] = new(StringParser)
+
+	return initParserMap
+}
+
 func Parse(argsParser *ArgsParser, argsList ...string) {
+	argsSchemaMap := argsSchemaMapBuilder()
+	for idx, args := range argsList {
+		if argsSchema, ok := argsSchemaMap[args]; ok {
+			parserFactory(argsSchema.DataType, argsParser, getValue(idx, argsList))
+		}
+	}
+
+}
+
+func getValue(idx int, argsList []string) string {
+	if len(argsList) == 1 {
+		return "true"
+	}
+	return argsList[idx+1]
+
+}
+
+func argsSchemaMapBuilder() map[string]*ArgsSchema {
 	argsType := reflect.TypeOf(ArgsParser{})
 	argsSchemaMap := make(map[string]*ArgsSchema)
 	for i := 0; i < argsType.NumField(); i++ {
-		argsSchemaMap["-"+argsType.Field(i).Tag.Get("tag")] = &ArgsSchema{
+		argsSchemaMap[getArgsSchemaKey(argsType, i)] = &ArgsSchema{
 			Name:     argsType.Field(i).Name,
 			DataType: argsType.Field(i).Type.String(),
 			Tag:      argsType.Field(i).Tag.Get("tag"),
 		}
 	}
-	for idx, args := range argsList {
-		if argsSchema, ok := argsSchemaMap[args]; ok {
-			if argsSchema.DataType == "bool" {
-				argsParser.Logging = true
-			} else if argsSchema.DataType == "int" {
-				argsInt, _ := strconv.ParseInt(argsList[idx+1], 10, 64)
-				argsParser.Port = int(argsInt)
-			} else if argsSchema.DataType == "string" {
-				argsParser.Directory = argsList[idx+1]
-			}
-		}
-	}
+	return argsSchemaMap
+}
 
+func getArgsSchemaKey(argsType reflect.Type, i int) string {
+	return "-" + argsType.Field(i).Tag.Get("tag")
+}
+
+func parserFactory(dataType string, argsParser *ArgsParser, value string) {
+	initParserMap := registerParseMap()
+	initParserMap[dataType].parser(argsParser, value)
 }
