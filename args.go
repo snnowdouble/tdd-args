@@ -5,9 +5,11 @@ import (
 )
 
 type ArgsParser struct {
-	Logging   bool   `tag:"l"`
-	Port      int    `tag:"p"`
-	Directory string `tag:"d"`
+	Logging    bool     `tag:"l"`
+	Port       int      `tag:"p"`
+	Directory  string   `tag:"d"`
+	IntList    []int    `tag:"t"`
+	StringList []string `tag:"g"`
 }
 
 type ArgsSchema struct {

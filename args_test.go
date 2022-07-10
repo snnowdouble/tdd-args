@@ -108,3 +108,25 @@ func TestArgsParseBoolIntStringReturnReal(t *testing.T) {
 	assert.Equal(t, argsParser.Port, 8080)
 	assert.Equal(t, argsParser.Directory, "/usr/logs")
 }
+
+/*all default
+input: -p -d
+output: false 0 ""
+*/
+func TestArgsParseBoolIntStringReturnDefult(t *testing.T) {
+	argsParser := &ArgsParser{}
+	Parse(argsParser, "-p", "-d")
+	assert.Equal(t, argsParser.Logging, false)
+	assert.Equal(t, argsParser.Port, 0)
+	assert.Equal(t, argsParser.Directory, "")
+}
+
+/*single int list happy path：
+input: -t 1 2 -3 5
+output: 1 2 -3 5
+*/
+func TestSingleArgsParseIntListReturnReal(t *testing.T) {
+	argsParser := &ArgsParser{}
+	Parse(argsParser, "-t", "1", "2", "-3", "5")
+	assert.Equal(t, argsParser.IntList, []int{1, 2, -3, 5})
+}
