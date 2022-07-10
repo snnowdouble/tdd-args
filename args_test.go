@@ -130,3 +130,23 @@ func TestSingleArgsParseIntListReturnReal(t *testing.T) {
 	Parse(argsParser, "-t", "1", "2", "-3", "5")
 	assert.Equal(t, argsParser.IntList, []int{1, 2, -3, 5})
 }
+
+/*single int list default：
+input: -t
+output: 【】
+*/
+func TestSingleArgsParseIntListReturnDefault(t *testing.T) {
+	argsParser := &ArgsParser{}
+	Parse(argsParser, "-t")
+	assert.Equal(t, argsParser.IntList, []int{})
+}
+
+/*single int list sad path：
+input: -t 1 2 -3 u
+output: "invalid args error"
+*/
+func TestSingleArgsParseIntListReturnErr(t *testing.T) {
+	argsParser := &ArgsParser{}
+	err := Parse(argsParser, "-t", "1", "2", "-3", "u")
+	assert.Equal(t, err.Error(), "invalid args error")
+}
